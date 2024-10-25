@@ -1,0 +1,5 @@
+11 22 33
+ROT
+0 PICK
+3 PICK
+.S
