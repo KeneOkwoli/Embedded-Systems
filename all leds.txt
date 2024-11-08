@@ -1,0 +1,25 @@
+$d0000000 constant SIO_BASE
+SIO_BASE $004 + constant GPIO_IN
+SIO_BASE $020 + constant GPIO_OE
+SIO_BASE $028 + constant GPIO_OE_CLR
+SIO_BASE $018 + constant GPIO_OUT_CLR
+SIO_BASE $014 + constant GPIO_OUT_SET
+: init_button $100000 GPIO_OE_CLR ! ;
+: button? GPIO_IN @ $100000 and 0= ;
+: init_led
+$04010054 GPIO_OE !
+$04010054 GPIO_OUT_CLR !
+;
+: led_all_off $04010054 GPIO_OUT_CLR ! ;
+: led_all_on $04010054 GPIO_OUT_SET ! ;
+: blinky_2_times
+led_all_on 500 ms led_all_off 500 ms
+led_all_on 100 ms led_all_off 500 ms
+led_all_on 500 ms led_all_off 500 ms
+;
+: button_led0 button? if blinky_2_times then ;
+: button_led1 button? if begin blinky_2_times key? until then ;
+: button_led2 begin button? if blinky_2_times then key? until ;
+init_button init_led
+button_led0
+
