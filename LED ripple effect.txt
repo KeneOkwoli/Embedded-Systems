@@ -1,0 +1,132 @@
+
+
+
+\ Put your Forth code to upload here.
+\ 
+\ Clicking 'Send' without a selection will upload the contents of this area to the target.
+\ 
+\ Clicking 'Send' with a selection will upload just the selection to the target.
+
+$d0000000 constant SIO_BASE
+SIO_BASE $014 + constant GPIO_OUT_SET
+SIO_BASE $018 + constant GPIO_OUT_CLR
+SIO_BASE $020 + constant GPIO_OE
+: blinky1
+1 28 lshift GPIO_OE !
+1 28 lshift GPIO_OUT_SET !
+300 ms
+1 28 lshift GPIO_OUT_CLR !
+300 ms
+;
+: blinky2
+1 27 lshift GPIO_OE !
+1 27 lshift GPIO_OUT_SET !
+300 ms
+1 27 lshift GPIO_OUT_CLR !
+300 ms
+;
+: blinky3
+1 26 lshift GPIO_OE !
+1 26 lshift GPIO_OUT_SET !
+300 ms
+1 26 lshift GPIO_OUT_CLR !
+300 ms
+;
+
+: blinky4
+1 17 lshift GPIO_OE !
+1 17 lshift GPIO_OUT_SET !
+300 ms
+1 17 lshift GPIO_OUT_CLR !
+300 ms
+;
+: blinky5
+1 16 lshift GPIO_OE !
+1 16 lshift GPIO_OUT_SET !
+300 ms
+1 16 lshift GPIO_OUT_CLR !
+300 ms
+;
+: blinky6
+1 7 lshift GPIO_OE !
+1 7 lshift GPIO_OUT_SET !
+300 ms
+1 7 lshift GPIO_OUT_CLR !
+300 ms
+;
+
+: blinky7
+1 6 lshift GPIO_OE !
+1 6 lshift GPIO_OUT_SET !
+300 ms
+1 6 lshift GPIO_OUT_CLR !
+300 ms
+;
+: blinky8
+1 5 lshift GPIO_OE !
+1 5 lshift GPIO_OUT_SET !
+300 ms
+1 5 lshift GPIO_OUT_CLR !
+300 ms
+;
+: blinky9
+1 4 lshift GPIO_OE !
+1 4 lshift GPIO_OUT_SET !
+300 ms
+1 4 lshift GPIO_OUT_CLR !
+300 ms
+;
+
+: blinky10
+1 3 lshift GPIO_OE !
+1 3 lshift GPIO_OUT_SET !
+300 ms
+1 3 lshift GPIO_OUT_CLR !
+300 ms
+;
+: blinky11
+1 2 lshift GPIO_OE !
+1 2 lshift GPIO_OUT_SET !
+300 ms
+1 2 lshift GPIO_OUT_CLR !
+300 ms
+;
+: blinky12
+1 1 lshift GPIO_OE !
+1 1 lshift GPIO_OUT_SET !
+300 ms
+1 1 lshift GPIO_OUT_CLR !
+300 ms
+;
+
+: blinky
+begin
+blinky1
+blinky2
+blinky3
+blinky4
+blinky5
+blinky6
+blinky7
+blinky8
+blinky9
+blinky10
+blinky11
+blinky12
+300 ms
+blinky12
+blinky11
+blinky10
+blinky9
+blinky8
+blinky7
+blinky6
+blinky5
+blinky4
+blinky3
+blinky2
+blinky1
+key? until
+;
+
+blinky
