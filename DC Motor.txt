@@ -1,0 +1,139 @@
+\ RP2040 Datasheet
+\ build-date: 2024-10-05
+\ build-version: 169135e-dirty
+\ pin: GPIO11, GPIO10, GPIO26, GPIO27
+\ GPIO10 and GPIO11 for motor control
+\ GPIO26 and GPIO27 for oscilloscope demonstration
+\ Forth: ZeptoForth
+
+$40014000 constant IO_BANK0_BASE
+$40050000 constant PWM_BASE
+
+\ dc motor control register GPIO11 (LEFT)
+IO_BANK0_BASE $05C + constant GPIO11_CTRL
+\ dc motor control register GPIO10 (RIGHT)
+IO_BANK0_BASE $054 + constant GPIO10_CTRL
+
+
+\ dc motor control register GPIO27 mapping of GPIO11
+IO_BANK0_BASE $0DC + constant GPIO27_CTRL
+\ dc motor control register GPIO26 mapping of GPIO11
+IO_BANK0_BASE $0D4 + constant GPIO26_CTRL
+
+
+\ PWM Slice5 Registers
+PWM_BASE $064 + constant CH5_CSR \ Control and Status Register PWM5
+PWM_BASE $068 + constant CH5_DIV \ DIVIDER
+PWM_BASE $06c + constant CH5_CTR \ Direct access to the PWM counter
+PWM_BASE $070 + constant CH5_CC  \ CCR, CH-A bits 15:0, CH-B 31-16
+PWM_BASE $074 + constant CH5_TOP \ TOP
+
+$028A CH5_DIV !
+$0F062 CH5_TOP !
+$0000000 CH5_CC !
+
+: motor_ctl_init
+\ set function to PWM - see Page 13 in RP2040 datasheet
+$04 GPIO11_CTRL !
+$04 GPIO10_CTRL !
+$04 GPIO27_CTRL !
+$04 GPIO26_CTRL !
+;
+
+: motor_enable_on
+\ bit 1 enables the PWM
+1 CH5_CSR !
+;
+
+\ initialize by motor control words
+motor_ctl_init
+motor_enable_on
+
+\ create clockwise speed variables
+variable cw_s1
+variable cw_s2
+variable cw_s3
+variable cw_s4
+variable cw_s5
+variable cw_s6
+variable cw_s7
+
+\ create counter clockwise speed variables
+variable ccw_s1
+variable ccw_s2
+variable ccw_s3
+variable ccw_s4
+variable ccw_s5
+variable ccw_s6
+variable ccw_s7
+
+\ initialize clockwise speed initial values
+$22570000 cw_s1 !
+$44ae0000 cw_s2 !
+$67050000 cw_s3 !
+$895c0000 cw_s4 !
+$abb30000 cw_s5 !
+$ce0a0000 cw_s6 !
+$F0600000 cw_s7 !
+
+\ initialize counter clockwise speed initial values
+$00002257 ccw_s1 !
+$000044AE ccw_s2 !
+$00006705 ccw_s3 !
+$0000895C ccw_s4 !
+$0000ABB3 ccw_s5 !
+$0000CE0A ccw_s6 !
+$0000F060 ccw_s7 !
+
+\ create GOTO word
+: my_goto @ ch5_cc ! ;
+
+\ stop WORD
+: motor_stop 0 ch5_cc ! ;
+
+\ hold word
+: motor_hold $18081808 ch5_cc ! ;
+
+\ create clockwise speeds
+: cw_sp1 cw_s1 my_goto  ;
+: cw_sp2 cw_s2 my_goto  ;
+: cw_sp3 cw_s3 my_goto  ;
+: cw_sp4 cw_s4 my_goto  ;
+: cw_sp5 cw_s5 my_goto  ;
+: cw_sp6 cw_s6 my_goto  ;
+: cw_sp7 cw_s7 my_goto  ;
+
+\ create counter clockwise speeds
+: ccw_sp1 ccw_s1 my_goto  ;
+: ccw_sp2 ccw_s2 my_goto  ;
+: ccw_sp3 ccw_s3 my_goto  ;
+: ccw_sp4 ccw_s4 my_goto  ;
+: ccw_sp5 ccw_s5 my_goto  ;
+: ccw_sp6 ccw_s6 my_goto  ;
+: ccw_sp7 ccw_s7 my_goto  ;
+
+: lldelay 3000 ms ;
+: ssdelay 1000 ms ;
+
+
+\ declare a demo word for motor control
+: demo
+cw_sp1 lldelay
+cw_sp2 lldelay
+cw_sp3 lldelay
+cw_sp3 lldelay
+cw_sp4 lldelay
+cw_sp5 ssdelay
+cw_sp6 lldelay
+cw_sp7 ssdelay
+cw_sp3 lldelay
+cw_sp1 ssdelay
+ccw_sp2 lldelay
+ccw_sp4 ssdelay
+ccw_sp6 ssdelay
+cw_sp7 lldelay
+motor_stop
+;
+
+
+: run begin demo key? until ;
