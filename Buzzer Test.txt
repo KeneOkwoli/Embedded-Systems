@@ -1,0 +1,196 @@
+\ Put your Forth code to upload here.
+\ 
+\ Clicking 'Send' without a selection will upload the contents of this area to the target.
+\ 
+\ Clicking 'Send' with a selection will upload just the selection to the target.
+
+\ mose code 
+\ top_value is 377, cc_value is 1bb, then, the frequency is 550.00055 
+
+$40014000 constant IO_BANK0_BASE
+$40050000 constant PWM_BASE
+
+\ servo motor control register
+IO_BANK0_BASE $074 + constant GPIO14_CTRL
+\ piezo buzzer control register
+IO_BANK0_BASE $0b4 + constant GPIO22_CTRL
+
+PWM_BASE $03C + constant CH3_CSR \ Control and Status Register GPIO22 PWM3 Channel-A
+PWM_BASE $040 + constant CH3_DIV \ DIVIDER
+PWM_BASE $044 + constant CH3_CTR \ Direct access to the PWM counter
+PWM_BASE $048 + constant CH3_CC  \ CCR, ATTENTION ---CH-A bits 15:0; CH-B 31-16---
+PWM_BASE $04C + constant CH3_TOP \ TOP
+
+$0FFF CH3_DIV !
+$0E8 CH3_TOP !
+$074 CH3_CC !
+1 CH3_CSR !
+0 CH3_CSR ! \ bit 0 enables the PWM
+
+: didah_init
+\ set function to PWM - see Page 13 in RP2040 datasheet
+$04 GPIO22_CTRL !
+;
+
+$80 constant MOSE_1UNIT
+MOSE_1UNIT 3 * constant MOSE_3UNIT
+ 
+: pwn_on
+$03A4 CH3_TOP !
+$01D2 CH3_CC !
+; 
+
+: dah
+\ bit 1 enables the PWM
+pwn_on
+1 CH3_CSR !
+MOSE_3UNIT ms
+0 CH3_CSR ! \ bit 0 enables the PWM
+;
+
+: di
+\ bit 1 enables the PWM
+pwn_on
+1 CH3_CSR !
+MOSE_1UNIT ms
+0 CH3_CSR ! \ bit 0 enables the PWM
+;
+
+: space-didah
+0 CH3_CSR ! \ bit 0 enables the PWM
+MOSE_1UNIT ms
+; 
+
+
+: space-char
+0 CH3_CSR ! \ bit 0 enables the PWM
+MOSE_3UNIT ms
+; 
+
+: space-w
+0 CH3_CSR ! \ bit 0 enables the PWM
+MOSE_3UNIT MOSE_1UNIT + ms
+; 
+
+: ms_A
+di space-didah dah space-char
+;
+
+: ms_B
+dah space-didah di space-didah di space-didah di space-char
+;
+
+: ms_C
+dah space-didah di space-didah dah space-didah di space-char
+;
+
+: ms_D
+dah space-didah di space-didah di  space-char
+;
+
+: ms_E
+di space-char
+;
+
+: ms_F
+di space-didah di space-didah dah space-didah di space-char
+;
+
+: ms_G
+dah space-didah dah space-didah di space-char
+;
+
+: ms_H
+di space-didah di space-didah di space-didah di space-char
+;
+
+: ms_I
+di space-didah di space-char
+;
+
+: ms_J
+di space-didah dah space-didah dah space-didah dah space-char
+;
+
+: ms_K
+dah space-didah di space-didah dah space-char
+;
+
+: ms_L
+di space-didah dah space-didah di space-didah di space-char
+;
+
+: ms_M
+dah space-didah dah space-char
+;
+
+: ms_N
+dah space-didah di space-char
+;
+
+: ms_O
+dah space-didah dah space-didah dah space-char
+;
+
+: ms_P
+di space-didah dah space-didah dah space-didah di space-char
+;
+
+: ms_Q
+dah space-didah dah space-didah di space-didah dah space-char
+;
+
+: ms_R
+di space-didah dah space-didah di space-char
+;
+
+: ms_S
+di space-didah di space-didah di space-char
+;
+
+: ms_T
+dah space-char
+;
+
+: ms_U
+di space-didah di space-didah dah space-char
+;
+
+: ms_V
+di space-didah di space-didah di space-didah dah space-char
+;
+
+: ms_W
+di space-didah dah space-didah dah space-char
+;
+
+: ms_X
+dah space-didah di space-didah di space-didah dah space-char
+;
+
+: ms_Y
+dah space-didah di space-didah dah space-didah dah space-char
+;
+
+: ms_Z
+dah space-didah dah space-didah di space-didah di space-char
+;
+
+: ms_hello
+ms_H ms_E ms_L ms_L ms_O space-w
+; 
+
+: ms_sos
+ms_s ms_o ms_s 
+; 
+
+: call-help 
+begin 
+ms_sos 
+2000 ms
+key? until 
+; 
+
+didah_init
+
+ms_sos
