@@ -1,0 +1,76 @@
+\ Put your Forth code to upload here.
+\ 
+\ Clicking 'Send' without a selection will upload the contents of this area to the target.
+\ 
+\ Clicking 'Send' with a selection will upload just the selection to the target.
+
+\ mose code 
+\ top_value is 377, cc_value is 1bb, then, the frequency is 550.00055 
+
+$40014000 constant IO_BANK0_BASE
+$40050000 constant PWM_BASE
+
+\ servo motor control register
+IO_BANK0_BASE $074 + constant GPIO14_CTRL
+\ piezo buzzer control register
+IO_BANK0_BASE $0b4 + constant GPIO22_CTRL
+
+PWM_BASE $03C + constant CH3_CSR \ Control and Status Register GPIO22 PWM3 Channel-A
+PWM_BASE $040 + constant CH3_DIV \ DIVIDER
+PWM_BASE $044 + constant CH3_CTR \ Direct access to the PWM counter
+PWM_BASE $048 + constant CH3_CC  \ CCR, ATTENTION ---CH-A bits 15:0; CH-B 31-16---
+PWM_BASE $04C + constant CH3_TOP \ TOP
+
+$0FFF CH3_DIV !
+$0E8 CH3_TOP !
+$074 CH3_CC !
+1 CH3_CSR !
+0 CH3_CSR ! \ bit 0 enables the PWM
+
+: c4_pitch
+  $0075 CH3_TOP !
+  $003B CH3_CC !
+;
+
+: g4_pitch
+  $004D CH3_TOP !
+  $0026 CH3_CC !
+;
+
+: a4_pitch
+  $0045 CH3_TOP !
+  $0022 CH3_CC !
+;
+
+: play_c4
+  c4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
+: play_g4
+  g4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
+: play_a4
+  a4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
+: play_song
+  play_c4 play_c4
+  play_g4 play_g4
+  play_a4
+;
+
+
+play_song
