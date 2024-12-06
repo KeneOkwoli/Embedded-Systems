@@ -1,0 +1,79 @@
+\ RP2040 Datasheet
+\ build-date: 2024-02-02
+\ build-version: 169135e-dirty
+\ pin: GPIO14
+\ Forth: Mecrisp Stellaris Forth
+
+
+$40014000 constant IO_BANK0_BASE
+$40050000 constant PWM_BASE
+
+IO_BANK0_BASE $074 + constant GPIO14_CTRL
+IO_BANK0_BASE $07C + constant GPIO15_CTRL
+
+
+PWM_BASE $08C + constant CH7_CSR \ Control and Status Register GPIO14 PWM7 Channel-A
+PWM_BASE $090 + constant CH7_DIV \ DIVIDER
+PWM_BASE $094 + constant CH7_CTR \ Direct access to the PWM counter
+PWM_BASE $098 + constant CH7_CC  \ CCR, ATTENTION ---CH-A bits 15:0; CH-B 31-16---
+PWM_BASE $09C + constant CH7_TOP \ TOP
+
+$028A CH7_DIV !
+$0F062 CH7_TOP !
+$0C040C04 CH7_CC !
+
+
+: bl_disp_pwm_init
+
+\ set function to PWM - see Page 13 in RP2040 datasheet
+$04 GPIO14_CTRL !
+$04 GPIO15_CTRL !
+
+\ bit 1 enables the PWM
+1 CH7_CSR !
+;
+
+\ initialize parameter pwm and set pwm enable on
+bl_disp_pwm_init
+
+\ create delay as motion needs some time
+: my_delay 1000 ms ;
+
+\ create word - READY 7.5 percent is $01206
+: my_ready   $12061206 ch7_cc ! my_delay ;
+: my_home   $0C400C40 ch7_cc ! my_delay ;
+: my_work $18081808 ch7_cc ! my_delay ;
+
+
+\ create points variables
+variable p1
+variable p2
+variable p3
+variable p4
+variable p5
+variable p6
+variable p7
+
+\ initialize initial points
+$0C400C40 p1 !
+$0E360E36  p2 !
+$102D102D p3 !
+$12241224 p4 !
+$141A141A p5 !
+$16111611 p6 !
+$18081808 p7 !
+
+\ create GOTO word
+: my_goto @ ch7_cc ! ;
+
+\ create places
+: pp1 p1 my_goto my_delay ;
+: pp2 p2 my_goto my_delay ;
+: pp3 p3 my_goto my_delay ;
+: pp4 p4 my_goto my_delay ;
+: pp5 p5 my_goto my_delay ;
+: pp6 p6 my_goto my_delay ;
+: pp7 p7 my_goto my_delay ;
+
+\ run the robotic arm operation demo
+: my_demo begin pp4 pp1 pp1 pp5 pp3 pp1 pp6 pp2 key? until ;
