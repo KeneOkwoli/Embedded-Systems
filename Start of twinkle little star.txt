@@ -28,18 +28,18 @@ $074 CH3_CC !
 0 CH3_CSR ! \ bit 0 enables the PWM
 
 : c4_pitch
-  $0075 CH3_TOP !
-  $003B CH3_CC !
+  $074A CH3_TOP !
+  $03A5 CH3_CC !
 ;
 
 : g4_pitch
-  $004D CH3_TOP !
-  $0026 CH3_CC !
+  $04DD CH3_TOP !
+  $026E CH3_CC !
 ;
 
 : a4_pitch
-  $0045 CH3_TOP !
-  $0022 CH3_CC !
+  $0455 CH3_TOP !
+  $022A CH3_CC !
 ;
 
 : play_c4
