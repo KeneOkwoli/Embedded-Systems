@@ -1,0 +1,110 @@
+$40014000 constant IO_BANK0_BASE
+$40050000 constant PWM_BASE
+
+\ servo motor control register
+IO_BANK0_BASE $074 + constant GPIO14_CTRL
+\ piezo buzzer control register
+IO_BANK0_BASE $0b4 + constant GPIO22_CTRL
+
+PWM_BASE $03C + constant CH3_CSR \ Control and Status Register GPIO22 PWM3 Channel-A
+PWM_BASE $040 + constant CH3_DIV \ DIVIDER
+PWM_BASE $044 + constant CH3_CTR \ Direct access to the PWM counter
+PWM_BASE $048 + constant CH3_CC  \ CCR, ATTENTION ---CH-A bits 15:0; CH-B 31-16---
+PWM_BASE $04C + constant CH3_TOP \ TOP
+
+$0FFF CH3_DIV !
+$0E8 CH3_TOP !
+$074 CH3_CC !
+1 CH3_CSR !
+0 CH3_CSR ! \ bit 0 enables the PWM
+
+: c4_pitch
+  $074A CH3_TOP !
+  $03A5 CH3_CC !
+;
+
+: b4_pitch
+  $03DC CH3_TOP !
+  $01EE CH3_CC !
+;
+
+: g4_pitch
+  $04DD CH3_TOP !
+  $026E CH3_CC !
+;
+
+: a4_pitch
+  $0455 CH3_TOP !
+  $022A CH3_CC !
+;
+: f4_pitch
+  $0576 CH3_TOP !
+  $02BB CH3_CC !
+;
+
+: e4_pitch
+  $05C9 CH3_TOP !
+  $02E4 CH3_CC !
+;
+
+: d4_pitch
+  $067E CH3_TOP !
+  $033F CH3_CC !
+;
+
+: O4C
+  c4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
+: O4B
+  b4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
+: O4G
+  g4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
+: O4A
+  a4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
+: O4F
+  f4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
+: O4E
+  e4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
+: O4D
+  d4_pitch
+  1 CH3_CSR !
+  500 ms
+  0 CH3_CSR !
+  100 ms
+;
+
