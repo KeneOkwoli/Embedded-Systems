@@ -1,0 +1,34 @@
+
+\ Servo Control Code
+\ Define PWM Base and Registers
+$40014000 constant IO_BANK0_BASE
+$40050000 constant PWM_BASE
+
+IO_BANK0_BASE $074 + constant GPIO14_CTRL
+PWM_BASE $08C + constant CH7_CSR  \ Control and Status Register for PWM7 Channel-A
+PWM_BASE $090 + constant CH7_DIV  \ Clock Divider
+PWM_BASE $094 + constant CH7_CTR  \ Direct Access to the PWM Counter
+PWM_BASE $098 + constant CH7_CC   \ Counter Compare Register
+PWM_BASE $09C + constant CH7_TOP  \ Counter Top Value
+
+\ Initialise PWM
+: pwm_init
+  $04 GPIO14_CTRL !  \ Set GPIO14 function to PWM
+  $028A CH7_DIV !    \ Set divider for the PWM clock
+  $0F062 CH7_TOP !   \ Set the TOP value (period = 20 ms)
+  1 CH7_CSR !        \ Enable PWM
+;
+
+\ Create Delay
+: my_delay 1000 ms ;
+
+\ Servo Control Words
+: SLFT $18081808 CH7_CC ! my_delay ;  \ 1 ms pulse width (0 degrees)
+: SMID $0C400C40 CH7_CC ! my_delay ;  \ 1.5 ms pulse width (90 degrees)
+: SRGT $06050605 CH7_CC ! my_delay ;  \ 2 ms pulse width (180 degrees)
+
+\ Servo Operation Demo
+: servo_demo begin SLFT SMID SRGT key? until ;
+
+\ Initialise PWM and Run Demo
+pwm_init
