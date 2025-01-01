@@ -26,3 +26,4 @@ $1C031C60 constant LED_MASK
 : LTF  all_leds_off  $080000c0 GPIO_OUT_SET ! ;  \ GP27 and GP16
 : LTG  all_leds_off  $080000e0 GPIO_OUT_SET ! ;  \ GP17 and GP6
 
+init_leds
