@@ -2,10 +2,15 @@
 \ Define PWM Base and Registers
 $40014000 constant IO_BANK0_BASE
 $40050000 constant PWM_BASE
+$d0000000 constant SIO_BASE
+$1C0310E0 constant LED_MASK
 
 IO_BANK0_BASE $074 + constant GPIO14_CTRL
 IO_BANK0_BASE $07C + constant GPIO15_CTRL
 IO_BANK0_BASE $0b4 + constant GPIO22_CTRL \ buzzer
+SIO_BASE $014 + constant GPIO_OUT_SET
+SIO_BASE $018 + constant GPIO_OUT_CLR
+SIO_BASE $020 + constant GPIO_OE
 PWM_BASE $08C + constant CH7_CSR  \ Control and Status Register for PWM7 Channel-A
 PWM_BASE $090 + constant CH7_DIV  \ Clock Divider
 PWM_BASE $094 + constant CH7_CTR  \ Direct Access to the PWM Counter
@@ -37,6 +42,16 @@ $074 CH3_CC !
   0 CH3_CSR !        \ Disable buzzer PWM by default
 ;
 
+\ Initialise all LED GPIOs
+: init_leds
+  LED_MASK GPIO_OE !  \ Set GPIOs as outputs
+  LED_MASK GPIO_OUT_CLR !  \ Turn all LEDs off
+;
+
+\ Turn off all LEDs
+: all_leds_off
+  LED_MASK GPIO_OUT_CLR !
+;
 
 \ Create Delay
 : my_delay 1500 ms ;
@@ -140,6 +155,14 @@ $074 CH3_CC !
   100 ms
 ;
 
+\ Control words for each letter
+: LTA  all_leds_off  $08000020 GPIO_OUT_SET ! ;  \ GP27 and GP5
+: LTB  all_leds_off  $08000040 GPIO_OUT_SET ! ;  \ GP27 and GP6
+: LTC  all_leds_off  $08000060 GPIO_OUT_SET ! ;  \ GP27 and GP6 and GP5
+: LTD  all_leds_off  $08000080 GPIO_OUT_SET ! ;  \ GP27 and GP7
+: LTE  all_leds_off  $080000a0 GPIO_OUT_SET ! ;  \ GP27 and GP7 and GP5
+: LTF  all_leds_off  $080000c0 GPIO_OUT_SET ! ;  \ GP27 and GP16
+: LTG  all_leds_off  $080000e0 GPIO_OUT_SET ! ;  \ GP17 and GP6
 
 : demo
   begin
@@ -149,5 +172,6 @@ $074 CH3_CC !
   key? until
 ;
 
-\ Initialise PWM
+\ Initialise PWM and LEDs
+init_leds
 pwm_init
