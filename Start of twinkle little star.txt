@@ -1,12 +1,3 @@
-\ Put your Forth code to upload here.
-\ 
-\ Clicking 'Send' without a selection will upload the contents of this area to the target.
-\ 
-\ Clicking 'Send' with a selection will upload just the selection to the target.
-
-\ mose code 
-\ top_value is 377, cc_value is 1bb, then, the frequency is 550.00055 
-
 $40014000 constant IO_BANK0_BASE
 $40050000 constant PWM_BASE
 
