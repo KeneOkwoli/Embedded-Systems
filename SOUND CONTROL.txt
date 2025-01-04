@@ -18,6 +18,10 @@ $074 CH3_CC !
 1 CH3_CSR !
 0 CH3_CSR ! \ bit 0 enables the PWM
 
+: buzzer_init
+$04 GPIO22_CTRL !
+;
+
 : c4_pitch
   $074A CH3_TOP !
   $03A5 CH3_CC !
@@ -108,3 +112,4 @@ $074 CH3_CC !
   100 ms
 ;
 
+buzzer_init
