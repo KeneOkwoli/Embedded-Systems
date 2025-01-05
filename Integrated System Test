@@ -1,0 +1,7 @@
+: test_integration
+  all_leds_off
+  A  \ Play note A with LED and servo movement
+  B  \ Play note B with LED and servo movement
+  C  \ Play note C with LED and servo movement
+  D  \ Play note D with LED and servo movement
+;
