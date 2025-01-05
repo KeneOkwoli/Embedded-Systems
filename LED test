@@ -1,0 +1,11 @@
+: test_leds
+  all_leds_off
+  LTA  \ Test binary for ASCII 'A'
+  1000 ms
+  all_leds_off
+  LTB  \ Test binary for ASCII 'B'
+  1000 ms
+  all_leds_off
+  LTC  \ Test binary for ASCII 'C'
+  1000 ms
+;
