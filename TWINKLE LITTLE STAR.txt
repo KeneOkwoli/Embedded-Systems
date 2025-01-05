@@ -182,8 +182,8 @@ $074 CH3_CC !
 : LTC  all_leds_off  $08000060 GPIO_OUT_SET ! ;  \ GP27 and GP6 and GP5
 : LTD  all_leds_off  $08000080 GPIO_OUT_SET ! ;  \ GP27 and GP7
 : LTE  all_leds_off  $080000a0 GPIO_OUT_SET ! ;  \ GP27 and GP7 and GP5
-: LTF  all_leds_off  $080000c0 GPIO_OUT_SET ! ;  \ GP27 and GP16
-: LTG  all_leds_off  $080000e0 GPIO_OUT_SET ! ;  \ GP17 and GP6
+: LTF  all_leds_off  $080000c0 GPIO_OUT_SET ! ;  \ GP27 and GP7 and GP6
+: LTG  all_leds_off  $080000e0 GPIO_OUT_SET ! ;  \ GP17 and and GP 7 and GP6 GP5
 
 
 \ Servo + LEDS + Buzzer
