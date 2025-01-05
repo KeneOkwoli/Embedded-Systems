@@ -1,0 +1,5 @@
+: test_servo
+  SLFT  \ Test leftmost position
+  SMID  \ Test middle position
+  SRGT  \ Test rightmost position
+;
