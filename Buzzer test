@@ -1,0 +1,9 @@
+: test_buzzer
+  O4C  \ Play note C4
+  O4D  \ Play note D4
+  O4E  \ Play note E4
+  O4F  \ Play note F4
+  O4G  \ Play note G4
+  O4A  \ Play note A4
+  O4B  \ Play note B4
+;
