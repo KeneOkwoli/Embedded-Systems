@@ -123,7 +123,7 @@ $074 CH3_CC !
 : O4C
   c4_pitch
   1 CH3_CSR !
-  500 ms
+  350 ms
   0 CH3_CSR !
   100 ms
 ;
@@ -131,7 +131,7 @@ $074 CH3_CC !
 : O4B
   b4_pitch
   1 CH3_CSR !
-  500 ms
+  350 ms
   0 CH3_CSR !
   100 ms
 ;
@@ -139,7 +139,7 @@ $074 CH3_CC !
 : O4G
   g4_pitch
   1 CH3_CSR !
-  500 ms
+  350 ms
   0 CH3_CSR !
   100 ms
 ;
@@ -147,7 +147,7 @@ $074 CH3_CC !
 : O4A
   a4_pitch
   1 CH3_CSR !
-  500 ms
+  350 ms
   0 CH3_CSR !
   100 ms
 ;
@@ -155,7 +155,7 @@ $074 CH3_CC !
 : O4F
   f4_pitch
   1 CH3_CSR !
-  500 ms
+  350 ms
   0 CH3_CSR !
   100 ms
 ;
@@ -163,7 +163,7 @@ $074 CH3_CC !
 : O4E
   e4_pitch
   1 CH3_CSR !
-  500 ms
+  350 ms
   0 CH3_CSR !
   100 ms
 ;
@@ -171,7 +171,7 @@ $074 CH3_CC !
 : O4D
   d4_pitch
   1 CH3_CSR !
-  500 ms
+  350 ms
   0 CH3_CSR !
   100 ms
 ;
