@@ -58,7 +58,7 @@ $074 CH3_CC !
 
 \ Servo Control Words
 : SLFT $19FA19FA CH7_CC ! my_delay ;  \ 1 ms pulse width (0 degrees) (6200 in decimal)
-: SMID $0C400C40 CH7_CC ! my_delay ;  \ 1.5 ms pulse width (90 degrees) (3140 in decimal)
+: SMID $0C400C40 CH7_CC ! my_delay ;  \ 1.5 ms pulse width (90 degrees) (3140 in decimal) (or 12071207)
 : SRGT $069F069F CH7_CC ! my_delay ;  \ 2 ms pulse width (180 degrees) (1600 in decimal - to prevent stressing the motor)
 
 
